@@ -2,11 +2,14 @@ import React, { useEffect } from 'react'
 import FilterBar from '../Bars/FilterBar'
 import AnnonceCard from '../Annonce/AnnonceCard'
 import { useState } from 'react';
-
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export default function MainBooking() {
 
+  const { cat } = useParams();
+
 const [filter,setFilter] = useState({
-    category:"All Categories",
+    category:cat? cat :"All Categories",
     price:"Default",
     reservation:"Default"
 });
@@ -36,19 +39,21 @@ const fetchData = async () => {
     } catch (error) {
     }
   };
+  useEffect(()=>{
+  fetchData();
+  },[filter]);
 
-useEffect(()=>{
-fetchData();
-},[filter]);
 
   return (
     <>
         <FilterBar filter={filter} setFilter={setFilter}/>
         <div className="-mx-3 flex flex-wrap justify-center px-3 ">
           {cars.map((car,index)=>(
-              <AnnonceCard key={index} title={car.title} imgUrl={car.imageUrl} description={car.description}
-              price={car.price} reservationRate={car.reservationRate}/>
-          ))}
+             
+              <AnnonceCard  key={index} title={car.title} imgUrl={car.imageUrl} description={car.description}
+                price={car.price} reservationRate={car.reservationRate}/>
+        
+        ))}
           
         </div>
     </>

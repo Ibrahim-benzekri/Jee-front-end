@@ -40,10 +40,10 @@ export default function TopCarsSection() {
                         </div>                         
                     </div>
                     <div class="-mx-3 flex flex-wrap justify-center "> 
-                             {cars.map((car,index)=>(
-                               <AnnonceCard key={index} title={car.title} imgUrl={car.img} description={car.description}
-                               price={car.price} reservationRate={car.reservation}/>
-                             ))}          
+                    {cars.map((car,index)=>(
+                        <AnnonceCard key={index} title={car.title} imgUrl={car.imageUrl} description={car.description}
+                        price={car.price} reservationRate={car.reservationRate}/>
+                    ))}         
                     </div>
                     <div class="text-center">
                         <a href="#" class="bg-primary-500 hover:bg-primary-600 inline-block px-6 py-2 text-white">View All Cars</a>

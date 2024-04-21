@@ -1,6 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 export default function ByCategorySection() {
+    const navigate = useNavigate();
   return (
   <section class="py-10"> 
     <div class="container mx-auto px-4"> 
@@ -16,24 +19,29 @@ export default function ByCategorySection() {
         </div>
         <div class="-mx-3 flex flex-wrap justify-center"> 
             <div class="p-3 w-full md:w-6/12 lg:w-3/12"> 
-                <a href="#" class="bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDMyM3x8c3V2fGVufDB8fHx8MTYzMTY4Njc4Nw&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
-                        <h4 class="font-bold text-xl">Sedans</h4>
-                    </div></a> 
+            <Link to={`/filter/Sedans`}>
+                <div  class="cursor-pointer bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDMyM3x8c3V2fGVufDB8fHx8MTYzMTY4Njc4Nw&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
+                            <h4 class="font-bold text-xl">Sedans</h4>
+                        </div>
+                        </div> 
+            </Link>
+            
             </div>
+                
             <div class="p-3 w-full md:w-6/12 lg:w-3/12"> 
-                <a href="#" class="bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1511527844068-006b95d162c2?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDQzfHxjYXIlMjBzdXZ8ZW58MHx8fHwxNjMxNjg0ODkw&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
+                <div onClick={() => navigate("/filter", { state: { category: "SUVs" } })} class="bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1511527844068-006b95d162c2?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDQzfHxjYXIlMjBzdXZ8ZW58MHx8fHwxNjMxNjg0ODkw&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
                         <h4 class="font-bold text-xl">SUVs</h4>
-                    </div></a> 
+                    </div></div> 
             </div>
             <div class="p-3 w-full md:w-6/12 lg:w-3/12"> 
-                <a href="#" class="bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1597210159614-966c9f632c89?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDh8fGNhciUyMGNvbnZlcnRpYmxlfGVufDB8fHx8MTYzMTY4NTExMA&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
+                <div onClick={() => navigate("/filter", { state: { category: "Convertibles" } })} class="bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1597210159614-966c9f632c89?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDh8fGNhciUyMGNvbnZlcnRpYmxlfGVufDB8fHx8MTYzMTY4NTExMA&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
                         <h4 class="font-bold text-xl">Convertibles</h4>
-                    </div></a> 
+                    </div></div> 
             </div>
             <div class="p-3 w-full md:w-6/12 lg:w-3/12"> 
-                <a href="#" class="bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDMwfHxzcG9ydHMlMjBjYXJ8ZW58MHx8fHwxNjMxNjg3MzQ4&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
+                <div onClick={() => navigate("/filter", { state: { category: "Sports Cars" } })} class="bg-white block border group hover:text-gray-500 shadow-md text-gray-900"><img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixid=MnwyMDkyMnwwfDF8c2VhcmNofDMwfHxzcG9ydHMlMjBjYXJ8ZW58MHx8fHwxNjMxNjg3MzQ4&ixlib=rb-1.2.1q=85&fm=jpg&crop=faces&cs=srgb&w=600&h=450&fit=crop" class="group-hover:opacity-90 w-full" alt="..." width="600" height="450"/><div class="px-6 py-4">
                         <h4 class="font-bold text-xl">Sports Cars</h4>
-                    </div></a> 
+                    </div></div> 
             </div>                         
         </div>
     </div>                 

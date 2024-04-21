@@ -10,10 +10,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/home" element={<Main/>} />
-      </Routes>
-      <Routes>
-        <Route path="/book" element={<BookingPage/>} />
+        <Route path="/" element={<Main/>} />
+        <Route path="/book/:id" element={<BookingPage/>} />
+        <Route path="/filter/:cat" element={<MainBooking />} />
+        <Route path="/filter" element={<MainBooking />} />
       </Routes>
   </Router>
   );
