@@ -2,7 +2,6 @@ import React from 'react'
 import NavBar from '../Bars/NavBar'
 import Footer from '../Bars/Footer'
 import MainHome from '../Home/MainHome'
-import MainBooking from '../BookingPage/MainBooking'
 export default function Main() {
   return (
     <>
@@ -11,7 +10,7 @@ export default function Main() {
                     <NavBar/>
                 </header>
                 <main className="flex-1 ">
-                    <MainBooking/>
+                    <MainHome/>
                 </main>
 
                 <footer className=" bg-opacity-95 ">

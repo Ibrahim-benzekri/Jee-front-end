@@ -32,8 +32,6 @@ const fetchData = async () => {
       }
   
       const data = await response.json();
-      console.log(filter);
-      console.log(data);
       setCars(data);
     } catch (error) {
     }
