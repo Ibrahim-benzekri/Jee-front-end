@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from 'react'
-import AnnonceCard from '../Annonce/AnnonceCard'
 import ReservationCar from '../Annonce/ReservationCar'
 import Succes from '../Alert/Succes';
 import Errors from '../Alert/Errors';
@@ -8,6 +7,40 @@ export default function BookingPage() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [car,setcar] = useState({});
+    const jwt = localStorage.getItem("customer_jwt");
+    
+    const [booking,setBooking] = useState({
+      pickUpDate:null,
+      dropOffDate:null,
+      adress:"",
+      id:id
+  });
+    
+    const fetchUser = async () => {
+      try {
+          const requestOptions = {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+          };
+  
+          const response = await fetch(`http://localhost:8081/api/v1/form/verify?token=${jwt}`, requestOptions);
+          if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(errorText);
+          }
+          const data = await response.json();
+          setBooking({
+            ...booking,
+            email:data.email
+          });
+      } catch (error) {
+          setError(error.message);
+      }
+  };
+  
+  
     const fetchCar = async () => {
         try {
           const requestOptions = {
@@ -28,22 +61,16 @@ export default function BookingPage() {
             const data = await response.json();
             setcar(data);
         } catch (error) {
-            setError(error);
+            setError(error.message);
         }
       };
+
       useEffect(()=>{
-        if(id){
+        fetchUser();
         fetchCar();
-        }
       },[]);
-    const [booking,setBooking] = useState({
-        firstName:"",
-        lastName:"",
-        email:"",
-        pickUpDate:null,
-        dropOffDate:null,
-        adress:""
-    });
+
+    
     const [error,setError] = useState("");
    
       const dateComparaison = (dateString1, dateString2)=> {
@@ -90,6 +117,7 @@ export default function BookingPage() {
         }
     }
     const sendData = async () => {
+      
         try {
           const requestOptions = {
             method: "POST",
@@ -117,7 +145,7 @@ export default function BookingPage() {
             setShowSucess(true);
             setTimeout(() => setShowSucess(false), 2000);
             setTimeout(() => {
-                navigate("/home");
+                navigate("/");
           }, 1000);
         }
     }
@@ -139,23 +167,22 @@ export default function BookingPage() {
         </div>
 
         <div class="grid grid-cols-1 gap-12 mt-5 lg:grid-cols-2">
-            {id && (
+           
                 <ReservationCar   title={car.title} imgUrl={car.imageUrl} description={car.description}
                 price={car.price} reservationRate={car.reservationRate}/>
-            )}
-            
-            <div class=" py-6 rounded-lg bg-gray-200 h-2/3  md:p-8">
+             
+            <div class=" py-6 rounded-lg bg-gray-200 h-full  md:p-8">
                 
                 <div className='space-y-14'>
                      <div class="-mx-2 md:items-center md:flex">
                         <div class="flex-1 px-2">
                             <label class="block mb-2 text-sm text-gray-600 ">Pick-up date </label>
-                            <input type="date" onChange={changement} name='pickUpDate' placeholder="John " class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                            <input type="date" onChange={changement} name='pickUpDate'  class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
 
                         <div class="flex-1 px-2 mt-4 md:mt-0">
                             <label class="block mb-2 text-sm text-gray-600 ">Drop-off date</label>
-                            <input type="date" onChange={changement} name='dropOffDate' placeholder="Doe" class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg   focus:border-blue-400  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                            <input type="date" onChange={changement} name='dropOffDate'  class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg   focus:border-blue-400  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
                     </div>
                     <div class="mt-4">

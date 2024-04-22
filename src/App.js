@@ -21,16 +21,17 @@ function App() {
       <Router>
       
         <Routes>
-        <Route path="/book/:id" element={<BookingPage/>} />
-        <Route path="/filter/:cat" element={<MainBooking />} />
-        <Route path="/filter" element={<MainBooking />} />
-          <Route path="/" element={<Main />} />
-        </Routes>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-        <Routes>
-          <Route path="/register" element={<Register />} />
+            <Route path="/book/:id" element={<BookingPage/>} />
+
+            <Route path="/filter/:cat" element={<MainBooking />} />
+
+            <Route path="/filter" element={<MainBooking />} />
+
+            <Route path="/" element={<Main />} />
+          
+            <Route path="/login" element={<Login />} />
+          
+            <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
     </QueryClientProvider>

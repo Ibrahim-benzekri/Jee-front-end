@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-export default function AnnonceCard({title,imgUrl,reservationRate,description,price}) {
- 
-  return (
+export default function AnnonceCard({title,imgUrl,reservationRate,description,price,id}) {
+ const navigate = useNavigate();
+ return (
     <div class="p-3 w-full md:w-6/12 lg:w-4/12"> 
-       <div class="bg-white border shadow-md text-gray-500"> 
-                                <a ><img src={imgUrl} class="hover:opacity-90 w-full" style={{  height: '400px' }}/></a>
+       <div class="bg-white border shadow-md text-gray-500 cursor-pointer" onClick={()=>{navigate(`/book/${id}`)}}> 
+                                <div ><img src={imgUrl} class="hover:opacity-90 w-full" style={{  height: '400px' }}/></div>
                                 <div class="p-6">
                                     <h4 class="font-bold mb-2 text-gray-900 text-xl"><div class="hover:text-gray-500">{title}</div></h4>
                                     <p class="mb-2 text-sm">{description}</p>

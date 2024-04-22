@@ -41,7 +41,7 @@ export default function TopCarsSection() {
                     </div>
                     <div class="-mx-3 flex flex-wrap justify-center "> 
                     {cars.map((car,index)=>(
-                        <AnnonceCard key={index} title={car.title} imgUrl={car.imageUrl} description={car.description}
+                        <AnnonceCard key={index} id={car.id} title={car.title} imgUrl={car.imageUrl} description={car.description}
                         price={car.price} reservationRate={car.reservationRate}/>
                     ))}         
                     </div>

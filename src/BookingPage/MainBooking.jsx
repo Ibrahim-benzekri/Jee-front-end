@@ -3,10 +3,9 @@ import FilterBar from '../Bars/FilterBar'
 import AnnonceCard from '../Annonce/AnnonceCard'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 export default function MainBooking() {
 
-  const { cat } = useParams();
+  let { cat } = useParams();
 
 const [filter,setFilter] = useState({
     category:cat? cat :"All Categories",
@@ -36,6 +35,7 @@ const fetchData = async () => {
   
       const data = await response.json();
       setCars(data);
+      console.log(data)
     } catch (error) {
     }
   };
@@ -48,13 +48,10 @@ const fetchData = async () => {
     <>
         <FilterBar filter={filter} setFilter={setFilter}/>
         <div className="-mx-3 flex flex-wrap justify-center px-3 ">
-          {cars.map((car,index)=>(
-             
-              <AnnonceCard  key={index} title={car.title} imgUrl={car.imageUrl} description={car.description}
-                price={car.price} reservationRate={car.reservationRate}/>
-        
-        ))}
-          
+        {cars.map((car,index)=>(
+                        <AnnonceCard key={index} id={car.id} title={car.title} imgUrl={car.imageUrl} description={car.description}
+                        price={car.price} reservationRate={car.reservationRate}/>
+                    ))} 
         </div>
     </>
   )

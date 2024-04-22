@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({setState}) {
   return (
     <div class="container mx-auto relative">
       <nav class="flex flex-wrap items-center px-4">
-        <a
-          href="#"
-          class="font-bold font-sans hover:text-opacity-75 inline-flex items-center leading-none mr-4 space-x-1 text-primary-500 text-xl uppercase"
+        <div
+          class="cursor-pointer font-bold font-sans hover:text-opacity-75 inline-flex items-center leading-none mr-4 space-x-1 text-primary-500 text-xl uppercase"
         >
           <svg
             version="1.0"
@@ -27,7 +26,7 @@ export default function NavBar() {
             <path d="M52.762 40h30.571V26.667H66.094Z" opacity="0.2"></path>
           </svg>
           <span>Prime Drive</span>{" "}
-        </a>
+        </div>
         <button
           class="hover:bg-primary-500 hover:text-white ml-auto px-3 py-2 rounded text-white lg:hidden"
           data-name="nav-toggler"
@@ -43,21 +42,12 @@ export default function NavBar() {
           data-name="nav-menu"
         >
           <div class="flex flex-col mr-auto lg:flex-row">
-            <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-white">
+            <div onClick={()=>{setState("home")}} class="cursor-pointer hover:text-gray-400 lg:p-4 py-2 text-white">
               Home
-            </a>
-            <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-white">
-              Offers
-            </a>
-            <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-white">
-              Locations
-            </a>
-            <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-white">
-              Our Fleet
-            </a>
-            <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-white">
-              Support
-            </a>
+            </div>
+            <div onClick={()=>{setState("Cars")}} class="cursor-pointer  hover:text-gray-400 lg:p-4 py-2 text-white">
+              Our Cars
+            </div>
           </div>
           <div class="flex-wrap inline-flex items-center py-1 space-x-2">
             <Link
