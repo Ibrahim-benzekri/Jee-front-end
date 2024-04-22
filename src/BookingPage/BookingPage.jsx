@@ -8,7 +8,9 @@ export default function BookingPage() {
     const { id } = useParams();
     const [car,setcar] = useState({});
     const jwt = localStorage.getItem("customer_jwt");
-    
+    const [error,setError] = useState("");
+    const [showError, setShowError] = useState(false);
+    const [showSucess, setShowSucess] = useState(false);
     const [booking,setBooking] = useState({
       pickUpDate:null,
       dropOffDate:null,
@@ -36,7 +38,7 @@ export default function BookingPage() {
             email:data.email
           });
       } catch (error) {
-          setError(error.message);
+        setError("error here in fetching user.");
       }
   };
   
@@ -61,7 +63,7 @@ export default function BookingPage() {
             const data = await response.json();
             setcar(data);
         } catch (error) {
-            setError(error.message);
+            setError("error here in fetching the car");
         }
       };
 
@@ -71,7 +73,6 @@ export default function BookingPage() {
       },[]);
 
     
-    const [error,setError] = useState("");
    
       const dateComparaison = (dateString1, dateString2)=> {
         const date1 = new Date(dateString1);
@@ -83,8 +84,6 @@ export default function BookingPage() {
           return false;
         }
       }
-  const [showError, setShowError] = useState(false);
-  const [showSucess, setShowSucess] = useState(false);
       useEffect(() => {
         if (error) {
           setShowError(true);
@@ -136,7 +135,7 @@ export default function BookingPage() {
           }
 
         } catch (error) {
-            setError(error);
+            setError("error while sending request");
         }
       };
     const sendReservation = ()=>{
