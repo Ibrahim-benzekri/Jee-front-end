@@ -12,10 +12,10 @@ export default function FilterBar({filter,setFilter}) {
       }
     const category = [
         "All Categories",
-        "Sedans",
+        "Sedan",
         "SUV",
-        "Convertibles",
-        "Sport Cars"
+        "Convertible",
+        "Sport"
     ];
   return (    
   <>

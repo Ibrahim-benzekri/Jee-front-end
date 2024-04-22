@@ -1,7 +1,19 @@
 import React from "react";
 import SidebarAdmin from "./SidebarAdmin";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { DateTime } from "luxon";
 
 export default function DashboardAdmin() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["getReservations"],
+    queryFn: () =>
+      axios
+        .get(`http://localhost:8081/api/v1/admin/reservations`)
+        .then((res) => {
+          return res.data;
+        }),
+  });
   return (
     <div className="min-h-screen bg-gray-50/50">
       <SidebarAdmin />
@@ -108,7 +120,7 @@ export default function DashboardAdmin() {
                   Total Rents
                 </p>
                 <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                  12
+                  {data?.length}
                 </h4>
               </div>
             </div>
@@ -153,36 +165,41 @@ export default function DashboardAdmin() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="py-3 px-5 border-b border-blue-gray-50">
-                        <div className="flex items-center gap-4">
-                          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">
-                            Material XD Version
+                    {data?.map((reservation, index) => (
+                      <tr key={index}>
+                        <td className="py-3 px-5 border-b border-blue-gray-50">
+                          <div className="flex items-center gap-4">
+                            <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">
+                              {reservation.car}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="py-3 px-5 border-b border-blue-gray-50">
+                          <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
+                            {reservation.customer}
                           </p>
-                        </div>
-                      </td>
-
-                      <td className="py-3 px-5 border-b border-blue-gray-50">
-                        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
-                          $14,000
-                        </p>
-                      </td>
-                      <td className="py-3 px-5 border-b border-blue-gray-50">
-                        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
-                          $14,000
-                        </p>
-                      </td>
-                      <td className="py-3 px-5 border-b border-blue-gray-50">
-                        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
-                          $14,000
-                        </p>
-                      </td>
-                      <td className="py-3 px-5 border-b border-blue-gray-50">
-                        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
-                          $14,000
-                        </p>
-                      </td>
-                    </tr>
+                        </td>
+                        <td className="py-3 px-5 border-b border-blue-gray-50">
+                          <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
+                            {reservation.email}
+                          </p>
+                        </td>
+                        <td className="py-3 px-5 border-b border-blue-gray-50">
+                          <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
+                            {DateTime.fromISO(reservation.pick).toLocaleString(
+                              DateTime.DATE_MED
+                            )}
+                          </p>
+                        </td>
+                        <td className="py-3 px-5 border-b border-blue-gray-50">
+                          <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600">
+                            {DateTime.fromISO(reservation.drop).toLocaleString(
+                              DateTime.DATE_MED
+                            )}
+                          </p>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

@@ -1,26 +1,78 @@
 import React, { useState,useEffect } from 'react'
-import AnnonceCard from '../Annonce/AnnonceCard'
 import ReservationCar from '../Annonce/ReservationCar'
 import Succes from '../Alert/Succes';
 import Errors from '../Alert/Errors';
-import { useNavigate } from 'react-router-dom';
-
-export default function BookingPage({title,imgUrl,reservationRate,description,price}) {
+import { useNavigate, useParams } from 'react-router-dom';
+export default function BookingPage() {
     const navigate = useNavigate();
+    const { id } = useParams();
+    const [car,setcar] = useState({});
+    const jwt = localStorage.getItem("customer_jwt");
+    
     const [booking,setBooking] = useState({
-        firstName:"",
-        lastName:"",
-        email:"",
-        pickUpDate:null,
-        dropOffDate:null,
-        adress:""
-    });
-    const [error,setError] = useState("");
-    const EmailValidation = (email) => {
-        return String(email)
-          .toLowerCase()
-          .match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
+      pickUpDate:null,
+      dropOffDate:null,
+      adress:"",
+      id:id
+  });
+    
+    const fetchUser = async () => {
+      try {
+          const requestOptions = {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+          };
+  
+          const response = await fetch(`http://localhost:8081/api/v1/form/verify?token=${jwt}`, requestOptions);
+          if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(errorText);
+          }
+          const data = await response.json();
+          setBooking({
+            ...booking,
+            email:data.email
+          });
+      } catch (error) {
+          setError(error.message);
+      }
+  };
+  
+  
+    const fetchCar = async () => {
+        try {
+          const requestOptions = {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              //Authorization: `Bearer ${jwt}`,
+            },
+          };
+      
+          const response = await fetch(`http://localhost:8081/api/v1/Car/${id}`, requestOptions);
+      
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+          }
+          
+            const data = await response.json();
+            setcar(data);
+        } catch (error) {
+            setError(error.message);
+        }
       };
+
+      useEffect(()=>{
+        fetchUser();
+        fetchCar();
+      },[]);
+
+    
+    const [error,setError] = useState("");
+   
       const dateComparaison = (dateString1, dateString2)=> {
         const date1 = new Date(dateString1);
         const date2 = new Date(dateString2);
@@ -52,15 +104,7 @@ export default function BookingPage({title,imgUrl,reservationRate,description,pr
     }
 
     const validateForm = ()=>{
-        if(booking.firstName ===""){
-            setError("First name required");
-        }else if(booking.lastName ===""){
-            setError("Last name required");
-        }else if(booking.email ===""){
-            setError("Email required");
-        }else if(!EmailValidation(booking.email)){
-            setError("Invalid email");
-        }else if(booking.pickUpDate ===null){
+         if(booking.pickUpDate ===null){
             setError("pick-up date required");
         }else if(booking.dropOffDate ===null){
             setError("Drop-Off date required");
@@ -73,6 +117,7 @@ export default function BookingPage({title,imgUrl,reservationRate,description,pr
         }
     }
     const sendData = async () => {
+      
         try {
           const requestOptions = {
             method: "POST",
@@ -100,7 +145,7 @@ export default function BookingPage({title,imgUrl,reservationRate,description,pr
             setShowSucess(true);
             setTimeout(() => setShowSucess(false), 2000);
             setTimeout(() => {
-                navigate("/home");
+                navigate("/");
           }, 1000);
         }
     }
@@ -122,39 +167,22 @@ export default function BookingPage({title,imgUrl,reservationRate,description,pr
         </div>
 
         <div class="grid grid-cols-1 gap-12 mt-5 lg:grid-cols-2">
-            
-              <ReservationCar   title={title} imgUrl={imgUrl} description={description}
-              price={price} reservationRate={reservationRate}/>
-            
-            <div class="-mt-10 py-6 rounded-lg bg-gray-200  md:p-8">
+           
+                <ReservationCar   title={car.title} imgUrl={car.imageUrl} description={car.description}
+                price={car.price} reservationRate={car.reservationRate}/>
+             
+            <div class=" py-6 rounded-lg bg-gray-200 h-full  md:p-8">
                 
-                <div className='space-y-10'>
-                    <div class="-mx-2 md:items-center md:flex">
-                        <div class="flex-1 px-2">
-                            <label class="block mb-2 text-sm text-gray-600 ">First Name</label>
-                            <input type="text" onChange={changement} name='firstName' placeholder="John " class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
-                        </div>
-
-                        <div class="flex-1 px-2 mt-4 md:mt-0">
-                            <label class="block mb-2 text-sm text-gray-600 ">Last Name</label>
-                            <input type="text" onChange={changement} name='lastName' placeholder="Doe" class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg   focus:border-blue-400  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
-                        </div>
-                    </div>
-
-                    <div class="mt-4">
-                        <label class="block mb-2 text-sm text-gray-600 ">Email address</label>
-                        <input type="email" onChange={changement} name='email' placeholder="johndoe@example.com" class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg  focus:border-blue-400  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
-                    </div>
-
-                    <div class="-mx-2 md:items-center md:flex">
+                <div className='space-y-14'>
+                     <div class="-mx-2 md:items-center md:flex">
                         <div class="flex-1 px-2">
                             <label class="block mb-2 text-sm text-gray-600 ">Pick-up date </label>
-                            <input type="date" onChange={changement} name='pickUpDate' placeholder="John " class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                            <input type="date" onChange={changement} name='pickUpDate'  class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
 
                         <div class="flex-1 px-2 mt-4 md:mt-0">
                             <label class="block mb-2 text-sm text-gray-600 ">Drop-off date</label>
-                            <input type="date" onChange={changement} name='dropOffDate' placeholder="Doe" class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg   focus:border-blue-400  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                            <input type="date" onChange={changement} name='dropOffDate'  class="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg   focus:border-blue-400  focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
                     </div>
                     <div class="mt-4">

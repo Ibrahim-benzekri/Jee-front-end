@@ -3,8 +3,12 @@ import SidebarAdmin from "./SidebarAdmin";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AddCarsAdmin() {
+  const navigate = useNavigate();
   const schema = yup.object().shape({
     title: yup.string().trim().required(),
     description: yup.string().trim().required(),
@@ -20,13 +24,30 @@ export default function AddCarsAdmin() {
     resolver: yupResolver(schema),
   });
 
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      return axios.post(`http://localhost:8081/api/v1/admin/new-car`, data);
+    },
+    onMutate: (variables) => {
+      console.log("adding...");
+    },
+    onSuccess: (data, variables, context) => {
+      console.log("car added");
+      navigate("/admin/cars");
+    },
+    onError: (err, variables, context) => {
+      console.log(err.message);
+    },
+  });
+
   const mySubmit = (data) => {
-    const initialName = data.image[0].name;
-    const arrayName = initialName.split(".");
-    const imageName =
-      arrayName[0] + "-" + new Date().getTime() + "." + arrayName[1];
-    data = { ...data, image: imageName };
-    console.log(data);
+    const formData = new FormData();
+    formData.append("image", data.image[0]);
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+    formData.append("category", data.category);
+    mutation.mutate(formData);
   };
 
   return (

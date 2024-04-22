@@ -7,9 +7,11 @@ import Main from "./Layouts/Main";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import BookingLayout from "./Layouts/BookingLayout";
 import DashboardAdmin from "./components/DashboardAdmin";
 import CarsAdmin from "./components/CarsAdmin";
 import AddCarsAdmin from "./components/AddCarsAdmin";
+import EditCarsAdmin from "./components/EditCarsAdmin";
 function App() {
   const client = new QueryClient({
     defaultOptions: {
@@ -22,25 +24,21 @@ function App() {
     <QueryClientProvider client={client}>
       <Router>
         <Routes>
-          <Route path="/home" element={<Main />} />
-        </Routes>
-        <Routes>
-          <Route path="/book" element={<BookingPage />} />
-        </Routes>
-        <Routes>
+          <Route path="/book/:id" element={<BookingLayout />} />
+
+          <Route path="/filter/:cat" element={<MainBooking />} />
+
+          <Route path="/filter" element={<MainBooking />} />
+
+          <Route path="/" element={<Main />} />
+
           <Route path="/login" element={<Login />} />
-        </Routes>
-        <Routes>
+
           <Route path="/register" element={<Register />} />
-        </Routes>
-        <Routes>
           <Route path="/admin" element={<DashboardAdmin />} />
-        </Routes>
-        <Routes>
           <Route path="/admin/cars" element={<CarsAdmin />} />
-        </Routes>
-        <Routes>
           <Route path="/admin/add" element={<AddCarsAdmin />} />
+          <Route path="/admin/cars/:id" element={<EditCarsAdmin />} />
         </Routes>
       </Router>
     </QueryClientProvider>
