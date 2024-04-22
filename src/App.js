@@ -7,6 +7,9 @@ import Main from "./Layouts/Main";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import DashboardAdmin from "./components/DashboardAdmin";
+import CarsAdmin from "./components/CarsAdmin";
+import AddCarsAdmin from "./components/AddCarsAdmin";
 function App() {
   const client = new QueryClient({
     defaultOptions: {
@@ -29,6 +32,15 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/register" element={<Register />} />
+        </Routes>
+        <Routes>
+          <Route path="/admin" element={<DashboardAdmin />} />
+        </Routes>
+        <Routes>
+          <Route path="/admin/cars" element={<CarsAdmin />} />
+        </Routes>
+        <Routes>
+          <Route path="/admin/add" element={<AddCarsAdmin />} />
         </Routes>
       </Router>
     </QueryClientProvider>
