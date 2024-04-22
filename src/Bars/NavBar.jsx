@@ -1,7 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useConnection } from "../Utils/connection";
 
 export default function NavBar({setState}) {
+  const connexion = useConnection();
+  const navigate= useNavigate();
   return (
     <div class="container mx-auto relative">
       <nav class="flex flex-wrap items-center px-4">
@@ -49,20 +52,22 @@ export default function NavBar({setState}) {
               Our Cars
             </div>
           </div>
-          <div class="flex-wrap inline-flex items-center py-1 space-x-2">
-            <Link
-              to="/login"
-              class="border border-primary-500 hover:bg-primary-500 hover:text-white inline-block px-6 py-2 text-primary-500"
+          {!connexion && (
+            <div class="flex-wrap inline-flex items-center py-1 space-x-2">
+            <div
+              onClick={()=>{navigate("/login")}}
+              class="cursor-pointer border border-primary-500 hover:bg-primary-500 hover:text-white inline-block px-6 py-2 text-primary-500"
             >
               Log In
-            </Link>
-            <Link
-              to="/register"
+            </div>
+            <div
+              onClick={()=>{navigate("/register")}}
               class="bg-primary-500 border border-primary-500 hover:bg-primary-600 inline-block px-6 py-2 text-white"
             >
               Sign Up
-            </Link>
+            </div>
           </div>
+          )}
         </div>
       </nav>
     </div>

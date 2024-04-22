@@ -7,6 +7,7 @@ import Main from "./Layouts/Main";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import BookingLayout from "./Layouts/BookingLayout";
 function App() {
   const client = new QueryClient({
     defaultOptions: {
@@ -21,7 +22,7 @@ function App() {
       <Router>
       
         <Routes>
-            <Route path="/book/:id" element={<BookingPage/>} />
+            <Route path="/book/:id" element={<BookingLayout/>} />
 
             <Route path="/filter/:cat" element={<MainBooking />} />
 

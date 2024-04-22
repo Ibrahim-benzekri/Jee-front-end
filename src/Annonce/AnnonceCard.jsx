@@ -1,11 +1,20 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useConnection } from '../Utils/connection';
 
 export default function AnnonceCard({title,imgUrl,reservationRate,description,price,id}) {
  const navigate = useNavigate();
+ const connexion = useConnection();
+ const send = ()=>{
+    if(connexion){
+        navigate(`/book/${id}`);
+    }else{
+    navigate(`/login`);
+    }
+ }
  return (
     <div class="p-3 w-full md:w-6/12 lg:w-4/12"> 
-       <div class="bg-white border shadow-md text-gray-500 cursor-pointer" onClick={()=>{navigate(`/book/${id}`)}}> 
+       <div class="bg-white border shadow-md text-gray-500 cursor-pointer" onClick={()=>{send()}}> 
                                 <div ><img src={imgUrl} class="hover:opacity-90 w-full" style={{  height: '400px' }}/></div>
                                 <div class="p-6">
                                     <h4 class="font-bold mb-2 text-gray-900 text-xl"><div class="hover:text-gray-500">{title}</div></h4>
