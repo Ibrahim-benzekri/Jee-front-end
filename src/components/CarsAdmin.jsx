@@ -41,8 +41,8 @@ export default function CarsAdmin() {
                       <div>
                         <img
                           className="w-full"
-                          src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2FyfGVufDB8fDB8fHww"
-                          alt="Sunset in the mountains"
+                          src={`/${item.imageUrl}`}
+                          alt="car"
                         />
                         <div className="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
                       </div>

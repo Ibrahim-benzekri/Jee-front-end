@@ -37,6 +37,7 @@ export default function Login() {
     onSuccess: (data, variables, context) => {
       console.log("logged in");
       localStorage.setItem("customer_jwt", data.data.access_token);
+      localStorage.setItem("refresh_token", data.data.refresh_token);
       document.getElementById("loader").classList.add("hidden");
     },
     onError: (err, variables, context) => {

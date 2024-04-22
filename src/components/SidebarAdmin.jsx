@@ -1,8 +1,21 @@
+import axios from "axios";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export default function SidebarAdmin() {
   const pathName = useLocation().pathname;
+  const handleLogout = () => {
+    const refreshToken = localStorage.getItem("refresh_token");
+    axios
+      .post(
+        `http://localhost:8081/api/v1/form/logout?refresh_token=${refreshToken}`
+      )
+      .then((res) => {
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("customer_jwt");
+        window.location.href = "/";
+      });
+  };
   return (
     <aside className="bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
       <div className="relative border-b border-white/20">
@@ -184,7 +197,7 @@ export default function SidebarAdmin() {
             </p>
           </li>
           <li>
-            <a className="">
+            <a className="" onClick={handleLogout}>
               <button
                 className="middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
                 type="button"
