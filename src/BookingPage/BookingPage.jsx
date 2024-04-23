@@ -135,7 +135,7 @@ export default function BookingPage() {
           }
 
         } catch (error) {
-            setError("error while sending request");
+           setError("error while sending request");
         }
       };
     const sendReservation = ()=>{
