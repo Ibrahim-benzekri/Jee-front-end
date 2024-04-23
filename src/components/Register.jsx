@@ -3,9 +3,11 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 export default function Register() {
+  const navigate = useNavigate();
   const schema = yup.object().shape({
     firstName: yup.string().trim().required(),
     lastName: yup.string().trim().required(),
@@ -34,6 +36,7 @@ export default function Register() {
     },
     onSuccess: (data, variables, context) => {
       console.log("customer added");
+      navigate("/login");
       document.getElementById("loader").classList.add("hidden");
     },
     onError: (err, variables, context) => {
@@ -251,12 +254,12 @@ export default function Register() {
                 <hr className="mb-6 border-t" />
                 <div className="text-center">
                   <span>Already have an account? </span>
-                  <a
+                  <Link
                     className="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800 font-bold"
-                    href="#"
+                    to={"/login"}
                   >
                     Login!
-                  </a>
+                  </Link>
                 </div>
               </form>
             </div>

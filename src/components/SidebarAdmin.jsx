@@ -1,9 +1,22 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useConnection } from "../Utils/connection";
+import { jwtDecode } from "jwt-decode";
 
 export default function SidebarAdmin() {
   const pathName = useLocation().pathname;
+  const connection = useConnection();
+  const jwt = localStorage.getItem("customer_jwt");
+  const isAdmin = jwt
+    ? jwtDecode(jwt).realm_access.roles.includes("ADMIN")
+    : false;
+  useEffect(() => {
+    if (!connection && !isAdmin) {
+      window.location.href = "/";
+    }
+  }, []);
+
   const handleLogout = () => {
     const refreshToken = localStorage.getItem("refresh_token");
     axios
@@ -19,7 +32,7 @@ export default function SidebarAdmin() {
   return (
     <aside className="bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
       <div className="relative border-b border-white/20">
-        <Link className="flex items-center gap-4 py-6 px-8" to="/home">
+        <Link className="flex items-center gap-4 py-6 px-8" to="/">
           <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-white">
             PRIME DRIVE
           </h6>

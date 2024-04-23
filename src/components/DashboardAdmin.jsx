@@ -5,15 +5,38 @@ import axios from "axios";
 import { DateTime } from "luxon";
 
 export default function DashboardAdmin() {
+  const jwt = localStorage.getItem("customer_jwt");
   const { data, isLoading } = useQuery({
     queryKey: ["getReservations"],
     queryFn: () =>
       axios
-        .get(`http://localhost:8081/api/v1/admin/reservations`)
+        .get(`http://localhost:8081/api/v1/admin/reservations`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
         .then((res) => {
           return res.data;
         }),
   });
+  const { data: cars, isLoading: isCarLoading } = useQuery({
+    queryKey: ["geCars"],
+    queryFn: () =>
+      axios
+        .get(`http://localhost:8081/api/v1/admin/getcars`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
+        .then((res) => {
+          return res.data;
+        }),
+  });
+  if (isCarLoading) {
+    return null;
+  } else {
+    console.log(cars);
+  }
   return (
     <div className="min-h-screen bg-gray-50/50">
       <SidebarAdmin />
@@ -92,14 +115,8 @@ export default function DashboardAdmin() {
                   Total Cars
                 </p>
                 <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                  24 Cars
+                  {cars?.length} Cars
                 </h4>
-              </div>
-              <div className="border-t border-blue-gray-50 p-4">
-                <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                  <strong className="text-green-500">18</strong>&nbsp;In The
-                  Garage
-                </p>
               </div>
             </div>
 
@@ -117,7 +134,7 @@ export default function DashboardAdmin() {
               </div>
               <div className="p-4 text-right">
                 <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                  Total Rents
+                  Total Current Reservations
                 </p>
                 <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
                   {data?.length}
@@ -130,7 +147,7 @@ export default function DashboardAdmin() {
             <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
               <div className="relative bg-clip-border rounded-xl overflow-hidden bg-transparent text-gray-700 shadow-none m-0 flex items-center justify-between p-6">
                 <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
-                  Reservations
+                  Current Reservations
                 </h6>
               </div>
               <div className="p-6 overflow-x-scroll px-0 pt-0 pb-2">

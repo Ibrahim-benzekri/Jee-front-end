@@ -5,13 +5,20 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export default function CarsAdmin() {
+  const jwt = localStorage.getItem("customer_jwt");
   const navigation = useNavigate();
   const { data, refetch, isLoading } = useQuery({
     queryKey: ["geCars"],
     queryFn: () =>
-      axios.get(`http://localhost:8081/api/v1/admin/getcars`).then((res) => {
-        return res.data;
-      }),
+      axios
+        .get(`http://localhost:8081/api/v1/admin/getcars`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
+        .then((res) => {
+          return res.data;
+        }),
   });
   if (isLoading) {
     return null;
@@ -188,7 +195,12 @@ export default function CarsAdmin() {
                             onClick={() => {
                               axios
                                 .delete(
-                                  `http://localhost:8081/api/v1/admin/delete/${item.id}`
+                                  `http://localhost:8081/api/v1/admin/delete/${item.id}`,
+                                  {
+                                    headers: {
+                                      Authorization: `Bearer ${jwt}`,
+                                    },
+                                  }
                                 )
                                 .then((res) => refetch());
                             }}

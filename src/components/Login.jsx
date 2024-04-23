@@ -1,11 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 export default function Login() {
+  const navigate = useNavigate();
   const schema = yup.object().shape({
     email: yup.string().trim().email().required(),
     password: yup.string().required(),
@@ -38,6 +41,13 @@ export default function Login() {
       console.log("logged in");
       localStorage.setItem("customer_jwt", data.data.access_token);
       localStorage.setItem("refresh_token", data.data.refresh_token);
+      if (
+        jwtDecode(data.data.access_token).realm_access.roles.includes("ADMIN")
+      ) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
       document.getElementById("loader").classList.add("hidden");
     },
     onError: (err, variables, context) => {
@@ -173,12 +183,12 @@ export default function Login() {
                 <hr className="mb-6 border-t" />
                 <div className="text-center">
                   <span>Don't have an account? </span>
-                  <a
+                  <Link
                     className="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800 font-bold"
-                    href="#"
+                    to={"/register"}
                   >
                     Sign Up!
-                  </a>
+                  </Link>
                 </div>
               </form>
               <div className="h-32"></div>

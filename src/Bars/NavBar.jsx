@@ -1,16 +1,27 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useConnection } from "../Utils/connection";
+import axios from "axios";
 
-export default function NavBar({setState}) {
+export default function NavBar({ setState }) {
   const connexion = useConnection();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    const refreshToken = localStorage.getItem("refresh_token");
+    axios
+      .post(
+        `http://localhost:8081/api/v1/form/logout?refresh_token=${refreshToken}`
+      )
+      .then((res) => {
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("customer_jwt");
+        window.location.href = "/";
+      });
+  };
   return (
     <div class="container mx-auto relative">
       <nav class="flex flex-wrap items-center px-4">
-        <div
-          class="cursor-pointer font-bold font-sans hover:text-opacity-75 inline-flex items-center leading-none mr-4 space-x-1 text-primary-500 text-xl uppercase"
-        >
+        <div class="cursor-pointer font-bold font-sans hover:text-opacity-75 inline-flex items-center leading-none mr-4 space-x-1 text-primary-500 text-xl uppercase">
           <svg
             version="1.0"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,28 +56,49 @@ export default function NavBar({setState}) {
           data-name="nav-menu"
         >
           <div class="flex flex-col mr-auto lg:flex-row">
-            <div onClick={()=>{setState("home")}} class="cursor-pointer hover:text-gray-400 lg:p-4 py-2 text-white">
+            <div
+              onClick={() => {
+                setState("home");
+              }}
+              class="cursor-pointer hover:text-gray-400 lg:p-4 py-2 text-white"
+            >
               Home
             </div>
-            <div onClick={()=>{setState("Cars")}} class="cursor-pointer  hover:text-gray-400 lg:p-4 py-2 text-white">
+            <div
+              onClick={() => {
+                setState("Cars");
+              }}
+              class="cursor-pointer  hover:text-gray-400 lg:p-4 py-2 text-white"
+            >
               Our Cars
             </div>
           </div>
-          {!connexion && (
+          {!connexion ? (
             <div class="flex-wrap inline-flex items-center py-1 space-x-2">
-            <div
-              onClick={()=>{navigate("/login")}}
-              class="cursor-pointer border border-primary-500 hover:bg-primary-500 hover:text-white inline-block px-6 py-2 text-primary-500"
-            >
-              Log In
+              <div
+                onClick={() => {
+                  navigate("/login");
+                }}
+                class="cursor-pointer border border-primary-500 hover:bg-primary-500 hover:text-white inline-block px-6 py-2 text-primary-500"
+              >
+                Log In
+              </div>
+              <div
+                onClick={() => {
+                  navigate("/register");
+                }}
+                class="bg-primary-500 border border-primary-500 hover:bg-primary-600 inline-block px-6 py-2 text-white"
+              >
+                Sign Up
+              </div>
             </div>
+          ) : (
             <div
-              onClick={()=>{navigate("/register")}}
+              onClick={handleLogout}
               class="bg-primary-500 border border-primary-500 hover:bg-primary-600 inline-block px-6 py-2 text-white"
             >
-              Sign Up
+              Logout
             </div>
-          </div>
           )}
         </div>
       </nav>
