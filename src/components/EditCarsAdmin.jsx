@@ -8,6 +8,7 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export default function EditCarsAdmin() {
+  const jwt = localStorage.getItem("customer_jwt");
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -30,18 +31,29 @@ export default function EditCarsAdmin() {
   const { data, isLoading } = useQuery({
     queryKey: ["geCars"],
     queryFn: () =>
-      axios.get(`http://localhost:8081/api/v1/admin/${id}`).then((res) => {
-        setTitle(res.data.title);
-        setDescription(res.data.description);
-        setPrice(res.data.price);
-        setCategory(res.data.category);
-        return res.data;
-      }),
+      axios
+        .get(`http://localhost:8081/api/v1/admin/${id}`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
+        .then((res) => {
+          setTitle(res.data.title);
+          setDescription(res.data.description);
+          setPrice(res.data.price);
+          setCategory(res.data.category);
+          console.log(res.data);
+          return res.data;
+        }),
   });
 
   const mutation = useMutation({
     mutationFn: (data) => {
-      return axios.put(`http://localhost:8081/api/v1/admin/edit/${id}`, data);
+      return axios.put(`http://localhost:8081/api/v1/admin/edit/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
     },
     onMutate: (variables) => {
       console.log("editing...");
@@ -147,7 +159,6 @@ export default function EditCarsAdmin() {
                       id="category"
                       placeholder="Enter The Price In USD..."
                       className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                      defaultValue={category}
                     >
                       <option value={"Sedan"}>Sedan</option>
                       <option value={"SUV"}>SUV</option>

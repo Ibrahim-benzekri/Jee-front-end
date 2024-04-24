@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function AddCarsAdmin() {
   const navigate = useNavigate();
+  const jwt = localStorage.getItem("customer_jwt");
   const schema = yup.object().shape({
     title: yup.string().trim().required(),
     description: yup.string().trim().required(),
@@ -26,7 +27,11 @@ export default function AddCarsAdmin() {
 
   const mutation = useMutation({
     mutationFn: (data) => {
-      return axios.post(`http://localhost:8081/api/v1/admin/new-car`, data);
+      return axios.post(`http://localhost:8081/api/v1/admin/new-car`, data, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
     },
     onMutate: (variables) => {
       console.log("adding...");
